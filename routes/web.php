@@ -11,12 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
 Route::resource('products', 'ProductsController');
+Route::resource('in_shopping_carts', 'ProductInShoppingCartsController', [
+    'only' => ['store', 'destroy']
+]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::post('in_shopping_carts/reset', 'ProductInShoppingCartsController@reset');
+
+Route::get('/carrito', 'ShoppingCartController@show')->name('shopping_cart.show');
+Route::get('/carrito/productos', 'ShoppingCartController@products')->name('shopping_cart.products');
+
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('prueba/', 'HomeController@prueba')->name('pruebas');
+
+
+Route::get('/pagar', 'PaymentsController@pay')->name('payments.pay');
+Route::get('/pagar/completar', 'PaymentsController@execute')->name('payments.execute');
+Route::get('compras/{custom_id}', 'PaymentsController@show')->name('payments.show');
